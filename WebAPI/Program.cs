@@ -16,7 +16,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("Jwt"));
 var jwtSetting = builder.Configuration.GetSection("Jwt").Get<JwtSettings>();
-builder.WebHost.UseUrls("http://*:8080");
+
 
 
 builder.Services.AddScoped<IFoodRepository, EFFoodRepository>();
