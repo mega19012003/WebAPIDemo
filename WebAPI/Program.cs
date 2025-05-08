@@ -136,20 +136,20 @@ builder.Services.AddControllers();
 builder.Services.AddAuthorization();
 
 var app = builder.Build();
-
+app.UseSwagger();
 // Configure the HTTP request pipeline.
-/*if (app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-}*/
-app.UseSwagger();
+}
+/*
 app.UseSwaggerUI(c =>
 {
     c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
     c.RoutePrefix = "swagger"; // đường dẫn hiển thị Swagger UI
 });
-
+*/
 /*app.MapPost("/security/createToken",
 [AllowAnonymous] (User user) =>
 {
