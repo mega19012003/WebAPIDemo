@@ -24,21 +24,24 @@ namespace WebAPI.Repositories
 
         public async Task<IEnumerable<Food>> GetAllFoodAsync(Guid Id, string? SearchTerm, int? pageSize, int? pageIndex)
         {
+            var query = _context.Foods.AsQueryable();
 
-            if (pageSize == null || pageSize <= 0)
+            if (Id != Guid.Empty)
             {
-                pageSize = 10;
+                query = query.Where(f => f.Id == Id);
             }
-            if (pageIndex == null || pageIndex <= 0)
+
+            if (!string.IsNullOrEmpty(SearchTerm))
             {
-                pageIndex = 1;
+                query = query.Where(f => f.Name.Contains(SearchTerm)); 
             }
-            var items = _context.Foods.AsQueryable();
-            if (Id != null)
+
+            if (pageSize.HasValue && pageIndex.HasValue)
             {
-                items = items.Where(m => m.Id.Equals(Id));
+                query = query.Skip((pageIndex.Value - 1) * pageSize.Value).Take(pageSize.Value);
             }
-            return await _context.Foods.ToListAsync();
+
+            return await query.ToListAsync();
         }
 
         public async Task<Food> GetByIdAsync(Guid id)
