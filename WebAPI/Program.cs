@@ -12,6 +12,17 @@ using WebAPI.Repositories;
 using WebAPI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Thêm dịch vụ HTTPS
+/*builder.WebHost.ConfigureKestrel(serverOptions =>
+{
+    serverOptions.ListenAnyIP(8080, listenOptions =>
+    {
+        listenOptions.UseHttps("/etc/ssl/certs/selfsigned.crt", "/etc/ssl/private/selfsigned.key");
+    });
+});*/
+
+
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("Demo")));
 
