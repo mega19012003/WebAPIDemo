@@ -77,7 +77,11 @@ builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
-
+app.MapGet("/", context =>
+{
+    context.Response.Redirect("/swagger/index.html");
+    return Task.CompletedTask;
+});
 
 app.UseSwagger();
 app.UseSwaggerUI();
