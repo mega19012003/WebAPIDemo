@@ -51,22 +51,31 @@ namespace WebAPI.Repositories
 
         public async Task<Food> AddAsync(PostFoodDto dto)
         {
-            var food = new Food
+            try
             {
-                Id = Guid.NewGuid(),
-                MenuId = dto.MenuId,
-                Name = dto.Name,
-                Description = dto.Description,
-                Price = dto.Price,
-                ImgUrl = new List<string>()
-            };
+                var food = new Food
+                {
+                    Id = Guid.NewGuid(),
+                    MenuId = dto.MenuId,
+                    Name = dto.Name,
+                    Description = dto.Description,
+                    Price = dto.Price,
+                    ImgUrl = new List<string>()
+                };
 
-            string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images");
-            food.ImgUrl = await _fileService.SaveFileAsync(dto.Img, uploadsFolder);
+                string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images");
+                food.ImgUrl = await _fileService.SaveFileAsync(dto.Img, uploadsFolder);
 
-            await _context.Foods.AddAsync(food);
-            await _context.SaveChangesAsync();
-            return food;
+                await _context.Foods.AddAsync(food);
+                await _context.SaveChangesAsync();
+                return food;
+            }
+            catch (Exception ex)
+            {
+                // Log ra file hoặc console
+                Console.WriteLine("Lỗi khi thêm món ăn: " + ex.Message);
+                throw;
+            }
         }
 
         public async Task<Food> UpdateAsync(PutFoodDto dto)
